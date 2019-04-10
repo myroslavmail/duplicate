@@ -1,5 +1,5 @@
 pipeline {
-    agent { docker { image 'bash' } }
+    agent { docker { image 'busybox' } }
     stages {
         stage('Example') {
             steps {
