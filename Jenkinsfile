@@ -5,7 +5,7 @@ pipeline {
         stage('Example') {
             steps {
                 sh "ls -laR ./"
-                sh "chmod 755 ./my_script.sh"
+                sh "chmod 755 ./myscript.sh"
                 sh "./myscript.sh"
             }
         }
