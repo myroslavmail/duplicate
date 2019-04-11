@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 volume_backup () {
     echo "Backing up volumes filtered by '$OPTARG' tag(s)"
