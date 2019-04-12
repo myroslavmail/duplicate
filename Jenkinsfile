@@ -5,6 +5,15 @@ pipeline {
         }
     }
     
+    properties([
+        buildDiscarder(
+            logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '77', numToKeepStr: '')
+        ), 
+        pipelineTriggers([
+           cron('H H/3 * * *')
+        ])
+    ])
+    
     parameters {
             string (defaultValue: '180', description: 'days parameter', name: 'days', trim: false)
             string (defaultValue: 'name', description: 'volume tags', name: 'tags', trim: false)
