@@ -13,8 +13,6 @@ pipeline {
     stages {
         stage('Example') {
             steps {
-                sh "ls -la"
-                sh "chmod 755 ./myscript.sh"
                 sh "./myscript.sh -d ${params.days} -t ${params.tags}"
             }
         }
