@@ -1,8 +1,19 @@
 pipeline {
-    agent { docker { image 'busybox' } }
+    agent {
+        docker {
+            image 'busybox'
+        }
+    }
+    
     stages {
         parameters {
-            string(defaultValue: '180', description: 'days parameter', name: 'days', trim: false), string(defaultValue: 'name', description: 'volume tags', name: 'tags', trim: false)
+            string {
+                defaultValue: '180', description: 'days parameter', name: 'days', trim: false
+            }
+            
+            string {
+                defaultValue: 'name', description: 'volume tags', name: 'tags', trim: false)
+            }
         }
         stage('Example') {
             steps {
