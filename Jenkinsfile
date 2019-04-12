@@ -5,7 +5,7 @@ pipeline {
         }
     }
     
-    properties([
+    options([
         buildDiscarder(
             logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '77', numToKeepStr: '')
         ), 
