@@ -5,11 +5,12 @@ pipeline {
         }
     }
     
-    stages {
-        parameters {
+    parameters {
             string (defaultValue: '180', description: 'days parameter', name: 'days', trim: false)
             string (defaultValue: 'name', description: 'volume tags', name: 'tags', trim: false)
-        }
+    }
+   
+    stages {
         stage('Example') {
             steps {
                 sh "ls -la"
