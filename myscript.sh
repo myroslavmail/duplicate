@@ -1,7 +1,9 @@
 #!/bin/sh
 
 volume_backup () {
-    echo "Backing up volumes filtered by '$OPTARG' tag(s)"
+    aws_vol_id=$(aws ec2 describe-volumes --filters Name=tag:Name,Values='$OPTARG' Name=tag:Usage,Values='$OPTARG' --query "Volumes[].{ID:VolumeId}" --output=text)
+    aws ec2 describe-volume-status --volume-ids $aws_vol_id
+    #aws ec2 create-snapshot --volume-id @aws_vol_id --tag-specifications 'ResourceType=snapshot,Tags=[*]'
     if [ $? -eq 0 ]; then
         echo OK
     else
@@ -21,7 +23,7 @@ data_maintenance () {
 }
 
 usage () {
-    echo "$(basename "$0") [-h] [-d -t] -- this is help description to my script
+    echo "$(basename "$0") [-h] [-d -n -u] -- this is help description to my script
 
 where:
     -h show this help text
@@ -31,7 +33,7 @@ where:
 }
 
 
-while [[ $# -gt 0 ]] && getopts "ht:d:" key; do
+while [[ $# -gt 0 ]] && getopts "hn:u:d:" key; do
 case $key in
     d) arg=${OPTARG#-}
     if [[ "$arg" = "${OPTARG}" ]]; then
@@ -42,9 +44,18 @@ case $key in
         exit 1
     fi
     ;;
-    t) arg=${OPTARG#-}
+    n) arg=${OPTARG#-}
     if [[ "$arg" = "${OPTARG}" ]]; then
-        echo "Tags are correct" && volume_backup
+        echo "Tag is correct" && volume_backup
+    else
+        echo "Tag value can't be the empty space"
+        OPTIND=$OPTIND-1
+        exit
+    fi
+    ;;
+    u) arg=${OPTARG#-}
+    if [[ "$arg" = "${OPTARG}" ]]; then
+        echo "Tag is correct" && volume_backup
     else
         echo "Tag value can't be the empty space"
         OPTIND=$OPTIND-1
