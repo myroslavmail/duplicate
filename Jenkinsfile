@@ -17,13 +17,14 @@ pipeline {
     
     parameters {
             string (defaultValue: '180', description: 'days parameter', name: 'days', trim: false)
-            string (defaultValue: 'name', description: 'volume tags', name: 'tags', trim: false)
+            string (defaultValue: '*', description: 'Tag Name', name: 'name', trim: false)
+            string (defaultValue: '*', description: 'Tag Usage', name: 'usage', trim: false)
     }
    
     stages {
         stage('Example') {
             steps {
-                sh "./myscript.sh -d ${params.days} -t ${params.tags}"
+                sh "./myscript.sh -d ${params.days} -n ${params.name} -u ${params.usage}"
             }
         }
     }
