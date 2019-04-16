@@ -24,6 +24,7 @@ pipeline {
     stages {
         stage('Example') {
             steps {
+                sh "apt update && apt upgrade -y && apt install awscli -y && rm -rf /var/cache/apk/*"
                 sh "./myscript.sh -d ${params.days} -n ${params.name} -u ${params.usage}"
             }
         }
