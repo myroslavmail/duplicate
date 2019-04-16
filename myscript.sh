@@ -1,9 +1,8 @@
 #!/bin/sh
 
 volume_backup () {
-    whereis aws
-    aws_vol_id=$(/usr/bin/aws ec2 describe-volumes --filters Name=tag:Name,Values='$OPTARG' Name=tag:Usage,Values='$OPTARG' --query "Volumes[].{ID:VolumeId}" --output=text)
-    /usr/bin/aws ec2 describe-volume-status --volume-ids $aws_vol_id
+    aws_vol_id=$aws ec2 describe-volumes --filters Name=tag:Name,Values='$OPTARG' Name=tag:Usage,Values='$OPTARG' --query "Volumes[].{ID:VolumeId}" --output=text)
+    aws ec2 describe-volume-status --volume-ids $aws_vol_id
     #aws ec2 create-snapshot --volume-id @aws_vol_id --tag-specifications 'ResourceType=snapshot,Tags=[*]'
     if [ $? -eq 0 ]; then
         echo OK
