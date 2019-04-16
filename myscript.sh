@@ -2,11 +2,10 @@
 
 volume_backup () {
     aws_vol_id=$(aws ec2 describe-volumes --profile backup --filters Name=tag:Name,Values=$tag_name Name=tag:Usage,Values=$tag_usage --query "Volumes[].{ID:VolumeId}" --output=text)
-    echo this is my $aws_vol_id
-    #aws ec2 describe-volume-status --profile backup --volume-ids $aws_vol_id
-    #aws ec2 create-snapshot --volume-id @aws_vol_id --tag-specifications 'ResourceType=snapshot,Tags=[*]'
+    echo this is my aws_vol_id $aws_vol_id
+    aws ec2 create-snapshot --profile backup --volume-id $aws_vol_id --tag-specifications 'ResourceType=snapshot,Tags=[*]'
     if [ $? -eq 0 ]; then
-        echo OK
+        echo snapshot is taken
     else
         echo FAIL
         exit 1
