@@ -9,4 +9,4 @@ RUN apk --purge -v del py-pip
 RUN rm /var/cache/apk/*
 RUN aws configure set aws_access_key_id AKIAYA4DMQLPZIDALJCW
 RUN aws configure set aws_secret_access_key 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
-RUN aws configure set default.region us-east-1
+RUN aws configure set backup.region us-east-1
