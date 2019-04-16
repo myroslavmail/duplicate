@@ -50,7 +50,7 @@ case $key in
     else
         echo "Tag value can't be the empty space"
         OPTIND=$OPTIND-1
-        exit
+        exit 1
     fi
     ;;
     u) arg=${OPTARG#-}
@@ -59,7 +59,7 @@ case $key in
     else
         echo "Tag value can't be the empty space"
         OPTIND=$OPTIND-1
-        exit
+        exit 1
     fi
     ;;
     h)
