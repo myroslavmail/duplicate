@@ -22,7 +22,6 @@ pipeline {
     stages {
         stage('Example') {
             steps {
-                sh "aws ecs list-container-instances --cluster default --region us-east-1"
                 sh "./myscript.sh -d ${params.days} -n ${params.name} -u ${params.usage}"
             }
         }
