@@ -1,7 +1,7 @@
 #!/bin/sh
 
 volume_backup () {
-    aws_vol_id=$(aws ec2 describe-volumes --profile backup --filters Name=tag:Name,Values='$OPTARG' Name=tag:Usage,Values='$OPTARG' --query "Volumes[].{ID:VolumeId}" --output=text)
+    aws_vol_id=$(aws ec2 describe-volumes --profile backup --filters Name=tag:Name,Values='$tag_name' Name=tag:Usage,Values='$tag_usage' --query "Volumes[].{ID:VolumeId}" --output=text)
     echo this is my optarg $OPTARG "$OPTARG"
     #aws ec2 describe-volume-status --profile backup --volume-ids $aws_vol_id
     #aws ec2 create-snapshot --volume-id @aws_vol_id --tag-specifications 'ResourceType=snapshot,Tags=[*]'
@@ -48,6 +48,8 @@ case $key in
     n) arg=${OPTARG#-}
     if [[ "$arg" = "${OPTARG}" ]]; then
         echo "Tag is correct and my optarg is $OPTARG"
+        tag_name=$OPTARG
+        echo "Now tag_name is $tag_name"
     else
         echo "Tag value can't be the empty space"
         OPTIND=$OPTIND-1
@@ -57,6 +59,8 @@ case $key in
     u) arg=${OPTARG#-}
     if [[ "$arg" = "${OPTARG}" ]]; then
         echo "Tag is correct and my optarg is $OPTARG"
+        tag_usage=$OPTARG
+        echo "Now tag_usage is $tag_usage"
     else
         echo "Tag value can't be the empty space"
         OPTIND=$OPTIND-1
