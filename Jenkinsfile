@@ -22,6 +22,7 @@ pipeline {
     stages {
         stage('Example') {
             steps {
+                sh "export AWS_DEFAULT_REGION=us-east-1"
                 sh "./myscript.sh -d ${params.days} -n ${params.name} -u ${params.usage}"
             }
         }
