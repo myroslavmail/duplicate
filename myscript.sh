@@ -2,7 +2,7 @@
 
 volume_backup () {
     aws_vol_id=$(aws ec2 describe-volumes --profile backup --filters Name=tag:Name,Values='$OPTARG' Name=tag:Usage,Values='$OPTARG' --query "Volumes[].{ID:VolumeId}" --output=text)
-    echo "those are @aws_vol_od"
+    echo "those are @aws_vol_id"
     #aws ec2 describe-volume-status --profile backup --volume-ids $aws_vol_id
     #aws ec2 create-snapshot --volume-id @aws_vol_id --tag-specifications 'ResourceType=snapshot,Tags=[*]'
     if [ $? -eq 0 ]; then
@@ -68,5 +68,5 @@ case $key in
     exit
     ;;
 esac
-volume_backup
 done
+volume_backup
