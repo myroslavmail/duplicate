@@ -24,7 +24,7 @@ pipeline {
     stages {
         stage('Example') {
             steps {
-                sh "apk add --update && pip install awscli && apk --purge -v del py-pip && rm -rf /var/cache/apk/*
+                sh "apk add --update "groff less python py-pip jq=1.5-r1" && pip install awscli=="1.14.10" && apk --purge -v del py-pip && rm -rf /var/cache/apk/*"
                 sh "./myscript.sh -d ${params.days} -n ${params.name} -u ${params.usage}"
             }
         }
