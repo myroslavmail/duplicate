@@ -47,7 +47,7 @@ case $key in
     ;;
     n) arg=${OPTARG#-}
     if [[ "$arg" = "${OPTARG}" ]]; then
-        echo "Tag is correct"
+        echo "Tag is correct and my optarg is $OPTARG"
     else
         echo "Tag value can't be the empty space"
         OPTIND=$OPTIND-1
@@ -56,7 +56,7 @@ case $key in
     ;;
     u) arg=${OPTARG#-}
     if [[ "$arg" = "${OPTARG}" ]]; then
-        echo "Tag is correct"
+        echo "Tag is correct and my optarg is $OPTARG"
     else
         echo "Tag value can't be the empty space"
         OPTIND=$OPTIND-1
