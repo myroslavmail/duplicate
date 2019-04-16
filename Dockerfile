@@ -1,6 +1,9 @@
-FROM busybox
+FROM alpine
 
-ENV AWSCLI_VERSION "1.14.10"
-ENV PACKAGES "groff less python py-pip jq=1.5-r1"
+LABEL maintainer="Myroslav Mail<myroslavmail@ukr.net>"
 
-RUN apk add --update $PACKAGES && pip install awscli==$AWSCLI_VERSION && apk --purge -v del py-pip && rm -rf /var/cache/apk/*
+RUN apk update
+RUN apk -Uuv add groff less python py-pip
+RUN pip install awscli
+RUN apk --purge -v del py-pip
+RUN rm /var/cache/apk/*
