@@ -46,7 +46,7 @@ case $key in
     ;;
     n) arg=${OPTARG#-}
     if [[ "$arg" = "${OPTARG}" ]]; then
-        echo "Tag is correct" && volume_backup
+        echo "Tag is correct"
     else
         echo "Tag value can't be the empty space"
         OPTIND=$OPTIND-1
@@ -55,7 +55,7 @@ case $key in
     ;;
     u) arg=${OPTARG#-}
     if [[ "$arg" = "${OPTARG}" ]]; then
-        echo "Tag is correct" && volume_backup
+        echo "Tag is correct"
     else
         echo "Tag value can't be the empty space"
         OPTIND=$OPTIND-1
@@ -67,4 +67,5 @@ case $key in
     exit
     ;;
 esac
+volume_backup
 done
