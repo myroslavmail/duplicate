@@ -2,7 +2,7 @@
 
 volume_backup () {
     vol_ids=$(aws ec2 describe-volumes --profile backup --filters Name=tag:Name,Values=$tag_name Name=tag:Usage,Values=$tag_usage --query "Volumes[].{ID:VolumeId}" --output=text)
-    my_date=$(date +%H:%M:%S_%u_%d_%m)
+    my_date=$(date +%H:%M:%S_%u_%d-%m)
     echo $vol_ids|tr ' +' '\n'
     echo $vol_ids|tr ' +' '\n'|while read line; do
         tags_list=$(aws ec2 describe-volumes --profile backup --volume-ids $line --output=json|jq .Volumes[].Tags[]|tr -d ' +\n"'|sed -r 's/\}\{/\}\,\{/g'|tr ':' '=');
