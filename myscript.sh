@@ -5,7 +5,7 @@ volume_backup () {
     tags_list=$(aws ec2 describe-volumes --profile backup --volume-ids `echo $vol_ids` --output=json|jq .Volumes[].Tags[]|tr -d ' +\n"'|sed -r 's/\}\{/\}\,\{/g'|tr ':' '=')
     
     echo $vol_ids|while read line; do
-        aws ec2 create-snapshot --profile backup --volume-id $line --tag-specifications ResourceType=snapshot,Tags=[echo $tags_list];
+        aws ec2 create-snapshot --profile backup --volume-id $line --tag-specifications ResourceType=snapshot,Tags=[`echo $tags_list`];
     done
 
     if [ $? -eq 0 ]; then
