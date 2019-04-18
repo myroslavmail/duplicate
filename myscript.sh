@@ -6,7 +6,7 @@ volume_backup () {
     
     while read line; do
         aws ec2 create-snapshot --profile backup --volume-id $line --tag-specifications ResourceType=snapshot,Tags=[$tags_list];
-    done < echo $vol_ids
+    done < 'echo $vol_ids'
 
     if [ $? -eq 0 ]; then
         echo snapshot is taken
