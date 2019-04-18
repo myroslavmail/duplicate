@@ -42,7 +42,6 @@ case $key in
     d) arg=${OPTARG#-}
     if [[ "$arg" = "${OPTARG}" ]]; then
         echo "Removal is initiated" && data_maintenance
-        OPTIND=$OPTIND-1
     else
         echo "Removal value can't be the empty space"
         OPTIND=$OPTIND-1
@@ -54,10 +53,8 @@ case $key in
         echo "Tag is correct and my optarg is $OPTARG"
         tag_name="Name=tag:Name,Values=$OPTARG"
         echo "Now tag_name is $tag_name"
-        OPTIND=$OPTIND-1
     else
         echo "Tag Name is empty and that's acceptable"
-        OPTIND=$OPTIND-1
         exit 0
     fi
     ;;
@@ -66,10 +63,8 @@ case $key in
         echo "Tag is correct and my optarg is $OPTARG"
         tag_usage="Name=tag:Usage,Values=$OPTARG"
         echo "Now tag_usage is $tag_usage"
-        OPTIND=$OPTIND-1
     else
         echo "Tag Usage is empty and that's acceptable"
-        OPTIND=$OPTIND-1
         exit 0
     fi
     ;;
