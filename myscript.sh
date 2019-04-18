@@ -11,7 +11,7 @@ volume_backup () {
     if [ $? -eq 0 ]; then
         echo snapshot is taken
     else
-        echo FAIL
+        echo FAIL 1
         exit 1
     fi
 }
@@ -21,7 +21,7 @@ data_maintenance () {
     if [ $? -eq 0 ]; then
         echo OK
     else
-        echo FAIL
+        echo FAIL 2
         exit 1
     fi
 }
