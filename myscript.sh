@@ -3,12 +3,11 @@
 volume_backup () {
     vol_ids=$(aws ec2 describe-volumes --profile backup --filters Name=tag:Name,Values=$tag_name Name=tag:Usage,Values=$tag_usage --query "Volumes[].{ID:VolumeId}" --output=text)
     tags_list=$(aws ec2 describe-volumes --profile backup --volume-ids $vol_ids --output=json|jq .Volumes[].Tags[]|tr -d ' +\n"'|sed -r 's/\}\{/\}\,\{/g'|tr ':' '=')
+    
     echo $vol_ids|while read line; do
-        aws ec2 create-snapshot --profile backup --volume-id $line --tag-specifications ResourceType=snapshot,Tags=[$tags_list];
+        aws ec2 create-snapshot --profile backup --volume-id $line --tag-specifications ResourceType=snapshot,Tags=[echo $tags_list];
     done
 
-    # aws ec2 describe-volumes --profile backup --filters Name=tag:Name,Values=$tag_name Name=tag:Usage,Values=$tag_usage --query "Volumes[].{Tag:Tags}" --output=text|while read -r a b c; do echo $a $b $c; done
-#   $vol_tags | while read -r a b c; do echo $b $c; done
     if [ $? -eq 0 ]; then
         echo snapshot is taken
     else
