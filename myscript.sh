@@ -48,28 +48,31 @@ case $key in
         exit 1
     fi
     ;;
+    OPTIND=$OPTIND-1
     n) arg=${OPTARG#-}
     if [[ "$arg" = "${OPTARG}" ]]; then
         echo "Tag is correct and my optarg is $OPTARG"
         tag_name="Name=tag:Name,Values=$OPTARG"
         echo "Now tag_name is $tag_name"
     else
-        echo "Tag value can't be the empty space"
+        echo "Tag Name is empty and that's acceptable"
         OPTIND=$OPTIND-1
-        exit 1
+        exit 0
     fi
     ;;
+    OPTIND=$OPTIND-1
     u) arg=${OPTARG#-}
     if [[ "$arg" = "${OPTARG}" ]]; then
         echo "Tag is correct and my optarg is $OPTARG"
         tag_usage="Name=tag:Usage,Values=$OPTARG"
         echo "Now tag_usage is $tag_usage"
     else
-        echo "Tag value can't be the empty space"
+        echo "Tag Usage is empty and that's acceptable"
         OPTIND=$OPTIND-1
-        exit 1
+        exit 0
     fi
     ;;
+    OPTIND=$OPTIND-1
     h)
     usage
     exit
