@@ -1,7 +1,7 @@
 #!/bin/sh
 
 volume_backup () {
-    vol_ids=$(aws ec2 describe-volumes --profile backup --filters Name=tag:Name,Values=$tag_name Name=tag:Usage,Values=$tag_usage --query "Volumes[].{ID:VolumeId}" --output=text)
+    vol_ids=$(aws ec2 describe-volumes --profile backup --filters $tag_name Name=tag:Usage,Values=$tag_usage --query "Volumes[].{ID:VolumeId}" --output=text)
     tags_list=$(aws ec2 describe-volumes --profile backup --volume-ids $vol_ids --output=json|jq .Volumes[].Tags[]|tr -d ' +\n"'|sed -r 's/\}\{/\}\,\{/g'|tr ':' '=')
     
     echo $vol_ids|while read line; do
@@ -51,7 +51,7 @@ case $key in
     n) arg=${OPTARG#-}
     if [[ "$arg" = "${OPTARG}" ]]; then
         echo "Tag is correct and my optarg is $OPTARG"
-        tag_name=$OPTARG
+        tag_name="Name=tag:Name,Values=$OPTARG"
         echo "Now tag_name is $tag_name"
     else
         echo "Tag value can't be the empty space"
