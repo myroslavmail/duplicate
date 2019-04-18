@@ -2,9 +2,9 @@
 
 volume_backup () {
     vol_ids=$(aws ec2 describe-volumes --profile backup --filters Name=tag:Name,Values=$tag_name Name=tag:Usage,Values=$tag_usage --query "Volumes[].{ID:VolumeId}" --output=text)
-    tags_list=$(aws ec2 describe-volumes --profile backup --volume-ids $vol_ids --output=json|jq .Volumes[].Tags[])
+    tags_list=$(aws ec2 describe-volumes --profile backup --volume-ids vol-0497d23eeb6a0d9e8 vol-01e24a3f82e532d7e --output=json|jq .Volumes[].Tags[]|tr -d ' +\n"'|sed -r 's/\}\{/\}\,\{/g'|tr ':' '=')
     echo $vol_ids|while read line; do
-        aws ec2 create-snapshot --profile backup --volume-id $line --tag-specifications ResourceType=snapshot,Tags=[{Key=Name,Value=Ubuntu},{Key=Usage,Value=Daily},];
+        aws ec2 create-snapshot --profile backup --volume-id $line --tag-specifications ResourceType=snapshot,Tags=[$tags_list];
     done
 
     # aws ec2 describe-volumes --profile backup --filters Name=tag:Name,Values=$tag_name Name=tag:Usage,Values=$tag_usage --query "Volumes[].{Tag:Tags}" --output=text|while read -r a b c; do echo $a $b $c; done
