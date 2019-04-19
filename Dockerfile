@@ -7,6 +7,7 @@ RUN apk update\
 && pip install awscli \
 && apk add jq \
 && apk --purge -v del py-pip \
+&& apk add coreutils \
 && rm /var/cache/apk/*
 RUN aws configure set profile.backup.aws_access_key_id AKIAYA4DMQLPZIDALJCW \
 && aws configure set profile.backup.aws_secret_access_key 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 \
