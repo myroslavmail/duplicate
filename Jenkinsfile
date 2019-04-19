@@ -10,7 +10,7 @@ pipeline {
     }
     
     triggers {
-        cron('H H/6 * * *')
+        cron('H H/3 * * *')
     }
     
     parameters {
@@ -22,7 +22,6 @@ pipeline {
     stages {
         stage('Example') {
             steps {
-                sh "docker exec affectionate_thompson apt-get install -y libltdl7"
                 sh "./myscript.sh -d ${params.days} -n ${params.name} -u ${params.usage}"
             }
         }
