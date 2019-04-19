@@ -1,19 +1,19 @@
 #!/bin/sh
 
 volume_backup () {
-#    vol_ids=$(aws ec2 describe-volumes --profile backup --filters Name=tag:Name,Values=$tag_name Name=tag:Usage,Values=$tag_usage --query "Volumes[].{ID:VolumeId}" --output=text)
-#    echo $vol_ids|tr ' +' '\n'
-#    echo $vol_ids|tr ' +' '\n'|while read line; do
-#        tags_list=$(aws ec2 describe-volumes --profile backup --volume-ids $line --output=json|jq .Volumes[].Tags[]|tr -d ' +\n"'|sed -r 's/\}\{/\}\,\{/g'|tr ':' '=');
-#        aws ec2 create-snapshot --profile backup --volume-id $line --tag-specifications 'ResourceType=snapshot,Tags=['$tags_list',{Key=Day_Month,Value='$(date +%d_%m)'},{Key=Day_Week,Value='$(date +%u)'}]';
-#    done
-#
-#    if [ $? -eq 0 ]; then
+    vol_ids=$(aws ec2 describe-volumes --profile backup --filters Name=tag:Name,Values=$tag_name Name=tag:Usage,Values=$tag_usage --query "Volumes[].{ID:VolumeId}" --output=text)
+    echo $vol_ids|tr ' +' '\n'
+    echo $vol_ids|tr ' +' '\n'|while read line; do
+        tags_list=$(aws ec2 describe-volumes --profile backup --volume-ids $line --output=json|jq .Volumes[].Tags[]|tr -d ' +\n"'|sed -r 's/\}\{/\}\,\{/g'|tr ':' '=');
+        aws ec2 create-snapshot --profile backup --volume-id $line --tag-specifications 'ResourceType=snapshot,Tags=['$tags_list',{Key=Day_Month,Value='$(date +%d_%m)'},{Key=Day_Week,Value='$(date +%u)'}]';
+    done
+
+    if [ $? -eq 0 ]; then
         echo snapshot is taken
-#    else
-#        echo FAIL 1
-#        exit 1
-#    fi
+    else
+        echo FAIL 1
+        exit 1
+    fi
 }
 
 data_maintenance () {
