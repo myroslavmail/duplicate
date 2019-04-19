@@ -26,7 +26,7 @@ data_maintenance () {
     echo `date +%F -d "-$rem_days days"`
     echo `date +%F -d "-'$rem_days' days"`
     echo `date +%F -d '-"$rem_days" days'`
-    echo `date +%F -d "-180 days"`
+    echo `date -d "-180 days"`
     
     aws ec2 describe-snapshots --profile backup --filters Name=volume-id,Values=vol-00161d785e1ce2446 --output=json --query 'Snapshots[?StartTime<=$rem_date]'
     
