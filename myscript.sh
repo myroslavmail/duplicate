@@ -20,7 +20,7 @@ data_maintenance () {
     echo "Remove backed up snapshot(s) when '$OPTARG' days old, except those that not !created on Sat and/or 31||30||29||28 day of the month"
     rem_date=$(date +%F -d "-$rem_days days")
     echo $rem_date
-    aws ec2 describe-snapshots --profile backup --filters Name=volume-id,Values=vol-00161d785e1ce2446 --output=json --query Snapshots[?StartTime<=`"$rem_date"`].SnapshotId
+    aws ec2 describe-snapshots --profile backup --filters Name=volume-id,Values=vol-00161d785e1ce2446 --output=json --query 'Snapshots[?StartTime=`"$rem_date"`].SnapshotId'
     
     if [ $? -eq 0 ]; then
         echo OK
