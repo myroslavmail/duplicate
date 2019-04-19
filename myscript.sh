@@ -18,7 +18,7 @@ volume_backup () {
 
 data_maintenance () {
     echo "Remove backed up snapshot(s) when '$OPTARG' days old, except those that not !created on Sat and/or 31||30||29||28 day of the month"
-    rem_date=$(date +%F -d "- '$rem_days' days")
+    rem_date=$(date +%F -d "-$rem_days days")
     echo $rem_date
     aws ec2 describe-snapshots --profile backup --filters Name=volume-id,Values=vol-00161d785e1ce2446 --output=json --query 'Snapshots[?StartTime<=$rem_date]'
     
@@ -56,9 +56,9 @@ case $key in
     ;;
     n) arg=${OPTARG#-}
     if [[ "$arg" = "${OPTARG}" ]]; then
-        echo "Tag is correct and my optarg is $OPTARG"
         tag_name=$OPTARG
         echo "Now tag_name is $tag_name"
+        echo "Tag is correct and my optarg is $OPTARG"
     else
         echo "Tag Name is empty and that's acceptable"
         exit 0
@@ -66,9 +66,9 @@ case $key in
     ;;
     u) arg=${OPTARG#-}
     if [[ "$arg" = "${OPTARG}" ]]; then
-        echo "Tag is correct and my optarg is $OPTARG"
         tag_usage=$OPTARG
         echo "Now tag_usage is $tag_usage"
+        echo "Tag is correct and my optarg is $OPTARG"
     else
         echo "Tag Usage is empty and that's acceptable"
         exit 0
