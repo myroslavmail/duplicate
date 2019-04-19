@@ -18,15 +18,9 @@ volume_backup () {
 
 data_maintenance () {
     echo "Remove backed up snapshot(s) when '$OPTARG' days old, except those that not !created on Sat and/or 31||30||29||28 day of the month"
-    rem_date=$(date +%F -d '-'$rem_days' days')
+    rem_date=$(date +%F -d "-$rem_days days")
     echo $rem_date
-    echo $(date +%F -d '-$rem_days days')
-    echo $(date +%F -d '-"$rem_days" days')
-    echo $(date +%F -d "-"$rem_days" days")
-    echo `date +%F -d "-$rem_days days"`
-    echo `date +%F -d "-'$rem_days' days"`
-    echo `date +%F -d '-"$rem_days" days'`
-    echo `date -d "-180 days"`
+
     
     aws ec2 describe-snapshots --profile backup --filters Name=volume-id,Values=vol-00161d785e1ce2446 --output=json --query 'Snapshots[?StartTime<=$rem_date]'
     
