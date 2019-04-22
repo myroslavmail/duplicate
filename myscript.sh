@@ -1,11 +1,13 @@
 #!/bin/sh
 
+
+
 volume_backup () {
     vol_ids=$(aws ec2 describe-volumes --profile backup --filters Name=tag:Name,Values=$tag_name Name=tag:Usage,Values=$tag_usage --query "Volumes[].{ID:VolumeId}" --output=text)
     echo $vol_ids|tr ' +' '\n'
     echo $vol_ids|tr ' +' '\n'|while read line; do
         tags_list=$(aws ec2 describe-volumes --profile backup --volume-ids $line --output=json|jq .Volumes[].Tags[]|tr -d ' +\n"'|sed -r 's/\}\{/\}\,\{/g'|tr ':' '=');
-        aws ec2 create-snapshot --profile backup --volume-id $line --tag-specifications 'ResourceType=snapshot,Tags=['$tags_list',{Key=Day_Month,Value='$(date +%d_%m)'},{Key=Day_Week,Value='$(date +%u)'}]';
+        aws ec2 create-snapshot --profile backup --volume-id $line --tag-specifications 'ResourceType=snapshot,Tags=['$tags_list',{Key=Day_Month,Value='$(date +%d_%m)'},{Key=Day_Week,Value='$(date +%u)'},{Key=Clock_Time,Value='$(date +%X)']';
     done
 
     if [ $? -eq 0 ]; then
@@ -20,7 +22,7 @@ data_maintenance () {
     echo "Remove backed up snapshot(s) when '$OPTARG' days old, except those that not !created on Sat and/or 31||30||29||28 day of the month"
     rem_date=$(date +%FT%X -d "-$rem_days days")
     echo $rem_date
-    aws ec2 describe-snapshots --profile backup --filters Name=volume-id,Values=vol-00161d785e1ce2446 --output=json --query "Snapshots[?StartTime<='$rem_date'].SnapshotId"
+    aws ec2 describe-snapshots --profile backup --filters Name=volume-id,Values=vol-00161d785e1ce2446 --output=json --query "Snapshots[?StartTime<='$rem_date']"
     
     if [ $? -eq 0 ]; then
         echo OK
