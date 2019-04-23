@@ -93,14 +93,14 @@ case $key in
 esac
 done
 echo !!!! DO COLLECT !!!
-var11=$(collect | sort | uniq)
+var11=$(collect | tr ' ' '\n' | sort | uniq)
 echo $var11
 #echo !!!! DO VOLUME BACKUP !!!
 #volume_backup
 echo !!!! DATA MAINTENANCE !!!
-var22=$(data_maintenance | sort | uniq)
+var22=$(data_maintenance | tr ' ' '\n' | sort | uniq)
 echo $var22
 echo !!!! COMPILE A LIST OF SNAPSHOTS TO BE REMOVED AND REMOVE THOSE !!!
 #echo $var11 $var22 | tr ' ' '\n' | sort | uniq -u
 
-grep -Fv $var11 $var22
+awk 'NR==FNR{a[$0]=1;next}!a[$0]' var22 var11
