@@ -98,13 +98,15 @@ case $key in
 esac
 done
 echo !!!! DO COLLECT !!!
-collect | sort | uniq
 var1=$(collect | sort | uniq)
+echo $var1
+var11=$(echo $var1)
 #echo !!!! DO VOLUME BACKUP !!!
 #volume_backup
 echo !!!! DATA MAINTENANCE !!!
-data_maintenance
 var2=$(data_maintenance)
+echo $var2
+var22=$(echo $var2)
 echo !!!! COMPARE TWO LISTS !!!
 #awk 'FNR==NR {a[$0]++; next} !a[$0]' $var1 $var2
-echo ${var1[@]} ${var2[@]} | tr ' ' '\n' | sort | uniq -u
+echo ${var11[@]} ${var22[@]} | tr ' ' '\n' | sort | uniq -u
