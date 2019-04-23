@@ -1,7 +1,5 @@
 #!/bin/sh
 
-
-
 volume_backup () {
     vol_ids=$(aws ec2 describe-volumes --profile backup --filters Name=tag:Name,Values=$tag_name Name=tag:Usage,Values=$tag_usage --query "Volumes[].VolumeId" --output=text)
     echo Volume IDs are $vol_ids
