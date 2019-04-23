@@ -94,11 +94,13 @@ esac
 done
 echo !!!! DO COLLECT !!!
 var11=$(collect | tr ' ' '\n' | sort | uniq)
+echo $var11
 echo $var11 > file1
 #echo !!!! DO VOLUME BACKUP !!!
 #volume_backup
 echo !!!! DATA MAINTENANCE !!!
 var22=$(data_maintenance | tr ' ' '\n' | sort | uniq)
+echo $var22
 echo $var22 > file2
 echo !!!! COMPILE A LIST OF SNAPSHOTS TO BE REMOVED AND REMOVE THOSE !!!
 #echo $var11 $var22 | tr ' ' '\n' | sort | uniq -u
