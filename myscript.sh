@@ -103,6 +103,4 @@ echo !!!! DO COLLECT !!!
 collect | sort | uniq
 echo !!!! DO VOLUME BACKUP !!!
 volume_backup
-echo !!!! DO DATA_MAINTENANCE !!!
-data_maintenance
 echo !!!! DONE !!!
