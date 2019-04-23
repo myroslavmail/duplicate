@@ -98,16 +98,7 @@ echo $var11
 #echo !!!! DO VOLUME BACKUP !!!
 #volume_backup
 echo !!!! DATA MAINTENANCE !!!
-echo 1
-data_maintenance
-echo 2
-echo $data_maintenance
-echo 3
 var22=$(data_maintenance | sort | uniq)
 echo $var22
-echo 1111 !!!! COMPARE TWO LISTS !!!
+echo !!!! COMPILE A LIST OF SNAPSHOTS TO BE REMOVED AND REMOVE THOSE !!!
 echo $var11 $var22 | tr ' ' '\n' | sort | uniq -u
-echo 2222 !!!! COMPARE TWO LISTS !!!
-echo $var11 $data_maintenance | tr ' ' '\n' | sort | uniq -u
-echo 3333 !!!! COMPARE TWO LISTS !!!
-echo $var11 `data_maintenance` | tr ' ' '\n' | sort | uniq -u
