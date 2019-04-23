@@ -39,12 +39,9 @@ volume_backup () {
 #collect snapshots to be removed
 data_maintenance () {
     rem_date=$(date +%FT%X -d "-$rem_days days")
-    aws ec2 describe-snapshots --profile backup --filters Name=volume-id,Values=vol-0ca889652aa1f9bb8,vol-011fc1e91e9bdb9b5,vol-00161d785e1ce2446 --output=json --query "Snapshots[?StartTime<='$rem_date'].SnapshotId[]"|tr -d ' +,[]'
-    if [ $? -eq 0 ]; then
-        echo OK
-    else
-        echo FAIL 2
-        exit 1
+    rem_snaps=$(aws ec2 describe-snapshots --profile backup --filters Name=volume-id,Values=vol-0ca889652aa1f9bb8,vol-011fc1e91e9bdb9b5,vol-00161d785e1ce2446 --output=json --query "Snapshots[?StartTime<='$rem_date'].SnapshotId[]"|tr -d ' +,[]')
+    if [ $rem_snaps != null ]; then
+        echo $sat_snap_list;
     fi
 }
 
