@@ -1,5 +1,26 @@
 #!/bin/sh
 
+#collecting snapshots to be excluded
+collect () {
+for w in $(seq -w 1 24)
+do
+    sat_snap_list=$(aws ec2 describe-snapshots --profile backup --filters Name=volume-id,Values=vol-0ca889652aa1f9bb8,vol-011fc1e91e9bdb9b5,vol-00161d785e1ce2446 Name=tag:Day_Week,Values=1 Name=tag:Week,Value$
+    if [ $sat_snap_list != null ]; then
+        echo $sat_snap_list;
+    fi
+done
+
+for m in $(seq -w 1 12)
+do
+    mon_snap_list=$(aws ec2 describe-snapshots --profile backup --filters Name=volume-id,Values=vol-0ca889652aa1f9bb8,vol-011fc1e91e9bdb9b5,vol-00161d785e1ce2446 Name=tag:Month,Values=$m --output=json --query$
+    if [ $mon_snap_list != null ]; then
+        echo $mon_snap_list;
+    fi
+done
+}
+
+
+#creating snapshots for the specified volumes as per specified tags
 volume_backup () {
     vol_ids=$(aws ec2 describe-volumes --profile backup --filters Name=tag:Name,Values=$tag_name Name=tag:Usage,Values=$tag_usage --query "Volumes[].VolumeId" --output=text)
     echo Volume IDs are $vol_ids
@@ -15,8 +36,8 @@ volume_backup () {
     fi
 }
 
+#collect snapshots to be removed
 data_maintenance () {
-    echo "Remove backed up snapshot(s) when '$OPTARG' days old, except those that not !created on Sat and/or 31||30||29||28 day of the month"
     rem_date=$(date +%FT%X -d "-$rem_days days")
     echo $rem_date
     aws ec2 describe-snapshots --profile backup --filters Name=volume-id,Values=vol-0ca889652aa1f9bb8,vol-011fc1e91e9bdb9b5,vol-00161d785e1ce2446 --output=json --query "Snapshots[?StartTime<='$rem_date'].SnapshotId"
@@ -38,7 +59,7 @@ where:
     exit 0
 }
 
-
+# configuring scrip arguments
 while [[ $# -gt 0 ]] && getopts "hn:u:d:" key; do
 case $key in
     d) arg=${OPTARG#-}
@@ -78,4 +99,10 @@ case $key in
     ;;
 esac
 done
+echo !!!! DO COLLECT !!!
+collect | sort | uniq
+echo !!!! DO VOLUME BACKUP !!!
 volume_backup
+echo !!!! DO DATA_MAINTENANCE !!!
+data_maintenance
+echo !!!! DONE !!!
