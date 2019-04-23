@@ -102,6 +102,7 @@ echo $var11
 echo !!!! DATA MAINTENANCE !!!
 var22=$(data_maintenance)
 echo $var22
-echo !!!! COMPARE TWO LISTS !!!
-#awk 'FNR==NR {a[$0]++; next} !a[$0]' $var1 $var2
-#echo ${var11[@]} ${var22[@]} | tr ' ' '\n' | sort | uniq -u
+echo AWK !!!! COMPARE TWO LISTS !!!
+awk 'FNR==NR {a[$0]++; next} !a[$0]' $var11 $var22
+echo ECHO !!!! COMPARE TWO LISTS !!!
+echo ${var11[@]} ${var22[@]} | tr ' ' '\n' | sort | uniq -u
