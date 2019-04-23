@@ -100,7 +100,10 @@ echo $var11
 #echo !!!! DO VOLUME BACKUP !!!
 #volume_backup
 echo !!!! DATA MAINTENANCE !!!
-var22=$(echo $data_maintenance)
+echo $data_maintenance
+var22=$data_maintenance
 echo $var22
 echo 1111 !!!! COMPARE TWO LISTS !!!
 echo $var11 $var22 | tr ' ' '\n' | sort | uniq -u
+echo 2222 !!!! COMPARE TWO LISTS !!!
+echo $var11 $data_maintenance | tr ' ' '\n' | sort | uniq -u
