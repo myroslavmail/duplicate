@@ -105,4 +105,4 @@ echo $var22 > file2
 echo !!!! COMPILE A LIST OF SNAPSHOTS TO BE REMOVED AND REMOVE THOSE !!!
 #echo $var11 $var22 | tr ' ' '\n' | sort | uniq -u
 
-awk 'NR==FNR{a[$0]=1;next}!a[$0]' file1 file2
+awk 'NR==FNR{a[$0]=1;next}!a[$0]' file2 file1
