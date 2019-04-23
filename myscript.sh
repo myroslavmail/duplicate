@@ -103,4 +103,4 @@ echo $var22
 echo !!!! COMPILE A LIST OF SNAPSHOTS TO BE REMOVED AND REMOVE THOSE !!!
 #echo $var11 $var22 | tr ' ' '\n' | sort | uniq -u
 
-awk 'NR==FNR{a[$0]=1;next}!a[$0]' var22 var11
+awk 'NR==FNR{a[$0]=1;next}!a[$0]' $var22 $var11
