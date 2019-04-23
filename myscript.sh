@@ -67,7 +67,7 @@ case $key in
         rem_days=$OPTARG
         echo "Now rem_days values is $rem_days"
         dont_rem=$(collect | sort |uniq)
-        echo "Removal is initiated" && awk 'FNR==NR {a[$0]++; next} !a[$0]' data_maintenance $dont_rem
+        echo "Removal is initiated" && awk 'FNR==NR {a[$0]++; next} !a[$0]' $data_maintenance $dont_rem
     else
         echo "Removal value can't be the empty space"
         OPTIND=$OPTIND-1
