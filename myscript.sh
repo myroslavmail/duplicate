@@ -105,4 +105,4 @@ var1=$(collect | sort | uniq)
 echo !!!! DATA MAINTENANCE !!!
 data_maintenance
 echo !!!! COMPARE TWO LISTS !!!
-awk 'FNR==NR {a[$0]++; next} !a[$0]' collect|sort|uniq data_maintenance
+awk 'FNR==NR {a[$0]++; next} !a[$0]' $var1 data_maintenance
