@@ -104,5 +104,7 @@ var1=$(collect | sort | uniq)
 #volume_backup
 echo !!!! DATA MAINTENANCE !!!
 data_maintenance
+var2=$(data_maintenance)
 echo !!!! COMPARE TWO LISTS !!!
-awk 'FNR==NR {a[$0]++; next} !a[$0]' $var1 data_maintenance
+#awk 'FNR==NR {a[$0]++; next} !a[$0]' $var1 $var2
+echo ${var1[@]} ${var2[@]} | tr ' ' '\n' | sort | uniq -u
