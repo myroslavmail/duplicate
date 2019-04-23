@@ -101,4 +101,6 @@ echo !!!! DATA MAINTENANCE !!!
 var22=$(data_maintenance | sort | uniq)
 echo $var22
 echo !!!! COMPILE A LIST OF SNAPSHOTS TO BE REMOVED AND REMOVE THOSE !!!
-echo $var11 $var22 | tr ' ' '\n' | sort | uniq -u
+#echo $var11 $var22 | tr ' ' '\n' | sort | uniq -u
+
+grep -Fv $var11 $var22
