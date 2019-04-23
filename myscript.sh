@@ -65,9 +65,7 @@ case $key in
     d) arg=${OPTARG#-}
     if [[ "$arg" = "${OPTARG}" ]]; then
         rem_days=$OPTARG
-        echo "Now rem_days values is $rem_days"
-        dont_rem=$(collect | sort |uniq)
-        echo "Removal is initiated" && awk 'FNR==NR {a[$0]++; next} !a[$0]' $data_maintenance $dont_rem
+        echo "Now rem_days values is $rem_days" #&& data_maintenance
     else
         echo "Removal value can't be the empty space"
         OPTIND=$OPTIND-1
@@ -101,7 +99,12 @@ case $key in
 esac
 done
 echo !!!! DO COLLECT !!!
-#collect | sort | uniq
-echo !!!! DO VOLUME BACKUP !!!
+echo $(collect | sort | uniq)
+var1=$(echo collect | sort | uniq)
+#echo !!!! DO VOLUME BACKUP !!!
 #volume_backup
-echo !!!! DONE !!!
+echo !!!! DATA MAINTENANCE !!!
+echo data_maintenance
+var2=$(echo data_maintenance)
+echo !!!! COMPARE TWO LISTS !!!
+awk 'FNR==NR {a[$0]++; next} !a[$0]' $var1 $var2
