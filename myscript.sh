@@ -40,9 +40,7 @@ volume_backup () {
 data_maintenance () {
     rem_date=$(date +%FT%X -d "-$rem_days days")
     rem_snaps=$(aws ec2 describe-snapshots --profile backup --filters Name=volume-id,Values=vol-0ca889652aa1f9bb8,vol-011fc1e91e9bdb9b5,vol-00161d785e1ce2446 --output=json --query "Snapshots[?StartTime<='$rem_date'].SnapshotId[]"|tr -d ' +,[]')
-    if [ $rem_snaps != null ]; then
-        echo $rem_snaps;
-    fi
+    echo $rem_snaps;
 }
 
 usage () {
@@ -103,7 +101,7 @@ echo !!!! DATA MAINTENANCE !!!
 echo 1
 data_maintenance
 echo 2
-var22=$(data_maintenance)
+var22=$data_maintenance
 echo 2
 echo $var22
 echo 1111 !!!! COMPARE TWO LISTS !!!
