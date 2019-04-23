@@ -4,7 +4,7 @@
 collect () {
 for w in $(seq -w 1 24)
 do
-    sat_snap_list=$(aws ec2 describe-snapshots --profile backup --filters Name=volume-id,Values=vol-0ca889652aa1f9bb8,vol-011fc1e91e9bdb9b5,vol-00161d785e1ce2446 Name=tag:Day_Week,Values=1 Name=tag:Week,Value$
+    sat_snap_list=$(aws ec2 describe-snapshots --profile backup --filters Name=volume-id,Values=vol-0ca889652aa1f9bb8,vol-011fc1e91e9bdb9b5,vol-00161d785e1ce2446 Name=tag:Day_Week,Values=1 Name=tag:Week,Values="$w" --output=json --query 'Snapshots[0].SnapshotId');
     if [ $sat_snap_list != null ]; then
         echo $sat_snap_list;
     fi
@@ -12,7 +12,7 @@ done
 
 for m in $(seq -w 1 12)
 do
-    mon_snap_list=$(aws ec2 describe-snapshots --profile backup --filters Name=volume-id,Values=vol-0ca889652aa1f9bb8,vol-011fc1e91e9bdb9b5,vol-00161d785e1ce2446 Name=tag:Month,Values=$m --output=json --query$
+    mon_snap_list=$(aws ec2 describe-snapshots --profile backup --filters Name=volume-id,Values=vol-0ca889652aa1f9bb8,vol-011fc1e91e9bdb9b5,vol-00161d785e1ce2446 Name=tag:Month,Values="$m" --output=json --query 'Snapshots[0].SnapshotId');
     if [ $mon_snap_list != null ]; then
         echo $mon_snap_list;
     fi
