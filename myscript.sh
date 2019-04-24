@@ -103,4 +103,5 @@ data_maintenance | tr ' ' '\n'| sort | uniq > file2
 echo !!!! COMPILE A LIST OF SNAPSHOTS TO BE REMOVED AND REMOVE THOSE !!!
 awk 'NR==FNR{a[$0]=1;next}!a[$0]' file1 file2|while read line; do
     aws ec2 delete-snapshot --snapshot-id $line;
+    echo !!!! SNAPSHOTS GONNA BE REMOVED NOW !!!
 done
