@@ -37,7 +37,7 @@ volume_backup () {
             x=Usual
             echo $x
         fi
-        aws ec2 create-snapshot --profile backup --volume-id $line --tag-specifications 'ResourceType=snapshot,Tags=['$tags_list',{Key=Extra,Value="$x"}]';
+        aws ec2 create-snapshot --profile backup --volume-id $line --tag-specifications 'ResourceType=snapshot,Tags=['$tags_list',{Key=Extra,Value='$x'}]';
     done
     if [ $? -eq 0 ]; then
         echo snapshot is taken
