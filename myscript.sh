@@ -23,20 +23,20 @@ done
 
 #creating snapshots for the specified volumes as per specified tags
 volume_backup () {
-    if [ "`date +%F`" = "`date -d "-$(date +%d) days month" +%F`" ] && [ "`date +%H%M%S`" -gt "205959" ]; then
-        x=Monthly
-        echo $x
-    elif [ `date +%w` -eq 3 ] && [ `date +%H%M%S` -gt 205959 ]; then
-        x=Weekly
-        echo $x
-    else
-        x=Usual
-        echo $x
-    fi
     vol_ids=$(aws ec2 describe-volumes --profile backup --filters Name=tag:Name,Values=$tag_name Name=tag:Usage,Values=$tag_usage --query "Volumes[].VolumeId" --output=text)
     echo Volume IDs are $vol_ids
     echo $vol_ids|while read line; do
         tags_list=$(aws ec2 describe-volumes --profile backup --volume-ids $line --output=json|jq .Volumes[].Tags[]|tr -d ' +\n"'|sed -r 's/\}\{/\}\,\{/g'|tr ':' '=');
+        if [ "`date +%F`" = "`date -d "-$(date +%d) days month" +%F`" ] && [ "`date +%H%M%S`" -gt "205959" ]; then
+            x=Monthly
+            echo $x
+        elif [ `date +%w` -eq 3 ] && [ `date +%H%M%S` -gt 205959 ]; then
+            x=Weekly
+            echo $x
+        else
+            x=Usual
+            echo $x
+        fi
         aws ec2 create-snapshot --profile backup --volume-id $line --tag-specifications 'ResourceType=snapshot,Tags=['$tags_list',{Key=Extra,Value="$x"}]';
     done
     if [ $? -eq 0 ]; then
