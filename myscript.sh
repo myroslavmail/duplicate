@@ -92,15 +92,15 @@ case $key in
     ;;
 esac
 done
+echo !!!! CREATE A SCHEDULED SNAPSHOT BACKED !!!
+volume_backup
 echo !!!! COLLECT SNAPSHOTS TO BE BACKED UP !!!
 collect | tr ' ' '\n' | sort | uniq
 collect | tr ' ' '\n' | sort | uniq > file1
-echo !!!! CREATE A SCHEDULED SNAPSHOT BACKED !!!
-volume_backup
 echo !!!! FILTERED LIST OF SNAPSHOTS TO BE REMOVED !!!
 data_maintenance | tr ' ' '\n'| sort | uniq
 data_maintenance | tr ' ' '\n'| sort | uniq > file2
 echo !!!! COMPILE A LIST OF SNAPSHOTS TO BE REMOVED AND REMOVE THOSE !!!
 awk 'NR==FNR{a[$0]=1;next}!a[$0]' file1 file2|while read line; do
-    cat $line;
+    aws ec2 delete-snapshot --snapshot-id $line;
 done
