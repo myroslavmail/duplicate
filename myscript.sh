@@ -37,7 +37,7 @@ volume_backup () {
     echo Volume IDs are $vol_ids
     echo $vol_ids|while read line; do
         tags_list=$(aws ec2 describe-volumes --profile backup --volume-ids $line --output=json|jq .Volumes[].Tags[]|tr -d ' +\n"'|sed -r 's/\}\{/\}\,\{/g'|tr ':' '=');
-        aws ec2 create-snapshot --profile backup --volume-id $line --tag-specifications 'ResourceType=snapshot,Tags=['$tags_list',{Key=Month,Value='$(date +%m)'},{Key=Extra,Value=$x},{Key=Week,Value='$(date +%V)'},{Key=Day_Week,Value='$(date +%u)'}]';
+        aws ec2 create-snapshot --profile backup --volume-id $line --tag-specifications 'ResourceType=snapshot,Tags=['$tags_list',{Key=Extra,Value="$x"}]';
     done
     if [ $? -eq 0 ]; then
         echo snapshot is taken
