@@ -1,5 +1,6 @@
 #!/bin/sh
 
+set -e
 #collecting snapshots to be excluded from removal
 collect () {
 for w in $(seq -w 1 54)
@@ -22,11 +23,21 @@ done
 
 #creating snapshots for the specified volumes as per specified tags
 volume_backup () {
+    if [ "`date +%F`" = "`date -d "-$(date +%d) days month" +%F`" ] && [ "`date +%H%M%S`" -gt "205959" ]; then
+        x=Monthly
+        echo $x
+    elif [ `date +%w` -eq 3 ] && [ `date +%H%M%S` -gt 205959 ]; then
+        x=Weekly
+        echo $x
+    else
+        x=Usual
+        echo $x
+    fi
     vol_ids=$(aws ec2 describe-volumes --profile backup --filters Name=tag:Name,Values=$tag_name Name=tag:Usage,Values=$tag_usage --query "Volumes[].VolumeId" --output=text)
     echo Volume IDs are $vol_ids
     echo $vol_ids|while read line; do
         tags_list=$(aws ec2 describe-volumes --profile backup --volume-ids $line --output=json|jq .Volumes[].Tags[]|tr -d ' +\n"'|sed -r 's/\}\{/\}\,\{/g'|tr ':' '=');
-        aws ec2 create-snapshot --profile backup --volume-id $line --tag-specifications 'ResourceType=snapshot,Tags=['$tags_list',{Key=Month,Value='$(date +%m)'},{Key=Week,Value='$(date +%V)'},{Key=Day_Week,Value='$(date +%u)'}]';
+        aws ec2 create-snapshot --profile backup --volume-id $line --tag-specifications 'ResourceType=snapshot,Tags=['$tags_list',{Key=Month,Value='$(date +%m)'},{Key=Extra,Value=$x},{Key=Week,Value='$(date +%V)'},{Key=Day_Week,Value='$(date +%u)'}]';
     done
     if [ $? -eq 0 ]; then
         echo snapshot is taken
@@ -94,14 +105,14 @@ esac
 done
 echo !!!! CREATE A SCHEDULED SNAPSHOT BACKED !!!
 volume_backup
-echo !!!! COLLECT SNAPSHOTS TO BE BACKED UP !!!
-collect | tr ' ' '\n' | sort | uniq
-collect | tr ' ' '\n' | sort | uniq > file1
-echo !!!! FILTERED LIST OF SNAPSHOTS TO BE REMOVED !!!
-data_maintenance | tr ' ' '\n'| sort | uniq
-data_maintenance | tr ' ' '\n'| sort | uniq > file2
-echo !!!! COMPILE A LIST OF SNAPSHOTS TO BE REMOVED AND REMOVE THOSE !!!
-awk 'NR==FNR{a[$0]=1;next}!a[$0]' file1 file2|while read line; do
-    aws ec2 delete-snapshot --snapshot-id $line;
-    echo !!!! SNAPSHOTS GONNA BE REMOVED NOW !!!
-done
+#echo !!!! COLLECT SNAPSHOTS TO BE BACKED UP !!!
+#collect | tr ' ' '\n' | sort | uniq
+#collect | tr ' ' '\n' | sort | uniq > file1
+#echo !!!! FILTERED LIST OF SNAPSHOTS TO BE REMOVED !!!
+#data_maintenance | tr ' ' '\n'| sort | uniq
+#data_maintenance | tr ' ' '\n'| sort | uniq > file2
+#echo !!!! COMPILE A LIST OF SNAPSHOTS TO BE REMOVED AND REMOVE THOSE !!!
+#awk 'NR==FNR{a[$0]=1;next}!a[$0]' file1 file2 #|while read line; do
+    #aws ec2 delete-snapshot --profile backup --snapshot-id $line;
+    #echo !!!! SNAPSHOTS GONNA BE REMOVED NOW !!!
+#done
