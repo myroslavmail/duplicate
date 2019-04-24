@@ -26,7 +26,7 @@ volume_backup () {
     echo Volume IDs are $vol_ids
     echo $vol_ids|while read line; do
         tags_list=$(aws ec2 describe-volumes --profile backup --volume-ids $line --output=json|jq .Volumes[].Tags[]|tr -d ' +\n"'|sed -r 's/\}\{/\}\,\{/g'|tr ':' '=');
-        aws ec2 create-snapshot --profile backup --volume-id $line --tag-specifications 'ResourceType=snapshot,Tags=['$tags_list',{Key=Day,Value='$(date +%d)'},{Key=Month,Value='$(date +%m)'},{Key=Week,Value='$(date +%V)'},{Key=Day_Week,Value='$(date +%u)'},{Key=Clock_Time,Value='$(date +%X)'}]';
+        aws ec2 create-snapshot --profile backup --volume-id $line --tag-specifications 'ResourceType=snapshot,Tags=['$tags_list',{Key=Month,Value='$(date +%m)'},{Key=Week,Value='$(date +%V)'},{Key=Day_Week,Value='$(date +%u)'}]';
     done
     if [ $? -eq 0 ]; then
         echo snapshot is taken
@@ -92,13 +92,15 @@ case $key in
     ;;
 esac
 done
-echo !!!! DO COLLECT !!!
+echo !!!! COLLECT SNAPSHOTS TO BE BACKED UP !!!
 collect | tr ' ' '\n' | sort | uniq
 collect | tr ' ' '\n' | sort | uniq > file1
-#echo !!!! DO VOLUME BACKUP !!!
-#volume_backup
-echo !!!! DATA MAINTENANCE !!!
+echo !!!! CREATE A SCHEDULED SNAPSHOT BACKED !!!
+volume_backup
+echo !!!! FILTERED LIST OF SNAPSHOTS TO BE REMOVED !!!
 data_maintenance | tr ' ' '\n'| sort | uniq
 data_maintenance | tr ' ' '\n'| sort | uniq > file2
 echo !!!! COMPILE A LIST OF SNAPSHOTS TO BE REMOVED AND REMOVE THOSE !!!
-awk 'NR==FNR{a[$0]=1;next}!a[$0]' file1 file2
+awk 'NR==FNR{a[$0]=1;next}!a[$0]' file1 file2|while read line; do
+    cat $line;
+done
