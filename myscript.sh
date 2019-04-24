@@ -5,7 +5,7 @@ set -e
 if [ "`date +%F`" = "`date -d "-$(date +%d) days month" +%F`" ] && [ "`date +%H%M%S`" -gt "205959" ]; then
     x=Monthly
     echo $x
-elif [ `date +%w` -eq 3 ] && [ `date +%H%M%S` -gt 205959 ]; then
+elif [ `date +%w` -eq 4 ] && [ `date +%H%M%S` -gt 205959 ]; then
     x=Weekly
     echo $x
 else
@@ -30,6 +30,7 @@ data_maintenance () {
     echo $rem_snaps;
 }
 
+#help
 usage () {
     echo "$(basename "$0") [-h] [-d -n -u] -- this is help description to my script
 
@@ -79,7 +80,8 @@ case $key in
     ;;
 esac
 done
-echo !!!! CREATE A SCHEDULED SNAPSHOT BACKED !!!
+echo !!!! CREATE A SCHEDULED SNAPSHOT BACKUP !!!
 volume_backup
 echo !!!! SHOW ALL SNAPSHOTS TO BE REMOVED !!!
 data_maintenance
+echo !!!! NOW REMOVE THEM ALL !!!
