@@ -21,12 +21,6 @@ volume_backup () {
         tags_list=$(aws ec2 describe-volumes --profile backup --volume-ids $line --output=json|jq .Volumes[].Tags[]|tr -d ' +\n"'|sed -r 's/\}\{/\}\,\{/g'|tr ':' '=');
         aws ec2 create-snapshot --profile backup --volume-id $line --tag-specifications 'ResourceType=snapshot,Tags=['$tags_list',{Key=Extra_Tag,Value='$x'}]';
     done
-    if [ $? -eq 0 ]; then
-        echo snapshot is taken
-    else
-        echo FAIL 1
-        exit 1
-    fi
 }
 
 #collect snapshots to be removed
