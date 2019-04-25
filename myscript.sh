@@ -117,6 +117,7 @@ data_maintenance
 echo !!!! NOW REMOVE THEM ALL !!!
 
 data_maintenance|while read line; do
+   echo $line
    aws ec2 describe-snapshots --profile backup --snapshot-ids $line --output=json
    echo =========================
 done
