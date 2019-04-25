@@ -31,9 +31,9 @@ data_maintenance () {
     rem_daily_snaps=$(aws ec2 describe-snapshots --profile backup --filters Name=volume-id,Values=vol-0ca889652aa1f9bb8,vol-011fc1e91e9bdb9b5,vol-00161d785e1ce2446 Name=tag:Extra_Tag,Values=Usual Name=tag:Name,Values=$tag_name Name=tag:Usage,Values=$tag_usage --output=json --query "Snapshots[?StartTime<='$rem_day'].SnapshotId[]"|tr -d ' +,[]"')
     rem_weekly_snaps=$(aws ec2 describe-snapshots --profile backup --filters Name=volume-id,Values=vol-0ca889652aa1f9bb8,vol-011fc1e91e9bdb9b5,vol-00161d785e1ce2446 Name=tag:Extra_Tag,Values=Weekly Name=tag:Name,Values=$tag_name Name=tag:Usage,Values=$tag_usage --output=json --query "Snapshots[?StartTime<='$rem_week'].SnapshotId[]"|tr -d ' +,[]"')
     rem_monthly_snaps=$(aws ec2 describe-snapshots --profile backup --filters Name=volume-id,Values=vol-0ca889652aa1f9bb8,vol-011fc1e91e9bdb9b5,vol-00161d785e1ce2446 Name=tag:Extra_Tag,Values=Monthly Name=tag:Name,Values=$tag_name Name=tag:Usage,Values=$tag_usage --output=json --query "Snapshots[?StartTime<='$rem_month'].SnapshotId[]"|tr -d ' +,[]"')
-    echo $rem_daily_snaps|tr ' ' '\n';
-    echo $rem_weekly_snaps|tr ' ' '\n';
-    echo $rem_monthly_snaps|tr ' ' '\n';
+    echo 1 $rem_daily_snaps|tr ' ' '\n';
+    echo 2 $rem_weekly_snaps|tr ' ' '\n';
+    echo 3 $rem_monthly_snaps|tr ' ' '\n';
 }
 
 #help
@@ -115,9 +115,3 @@ volume_backup
 echo !!!! SHOW ALL SNAPSHOTS TO BE REMOVED !!!
 data_maintenance
 echo !!!! NOW REMOVE THEM ALL !!!
-
-data_maintenance|while read line; do
-   echo $line
-   aws ec2 describe-snapshots --profile backup --snapshot-ids $line --output=json
-   echo =========================
-done
