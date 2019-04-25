@@ -2,10 +2,10 @@
 
 set -e
 
-if [ "`date +%F`" = "`date -d "-$(date +%d) days month" +%F`" ] && [ "`date +%H%M%S`" -gt "205959" ]; then
+if [ "`date +%F`" = "`date -d "-$(date +%d) days month" +%F`" ]; then
     x=Monthly
     echo x value is $x
-elif [ `date +%w` -eq 4 ] && [ `date +%H%M%S` -gt 205959 ]; then
+elif [ `date +%w` -eq 4 ]; then
     x=Weekly
     echo x value is$x
 else
@@ -28,11 +28,11 @@ data_maintenance () {
     rem_day=$(date +%FT%X -d "-$rem_days days")
     rem_week=$(date +%FT%X -d "-$rem_weeks weeks")
     rem_month=$(date +%FT%X -d "-$rem_months months")
-    rem_daily_snaps=$(aws ec2 describe-snapshots --profile backup --filters Name=volume-id,Values=vol-0ca889652aa1f9bb8,vol-011fc1e91e9bdb9b5,vol-00161d785e1ce2446 Name=tag:Extra_Tag,Values=Usual Name=tag:Name,Values=$tag_name Name=tag:Usage,Values=$tag_usage --output=json --query "Snapshots[?StartTime<='$rem_day'].SnapshotId[]"|tr -d ' +,[]')
-    rem_weekly_snaps=$(aws ec2 describe-snapshots --profile backup --filters Name=volume-id,Values=vol-0ca889652aa1f9bb8,vol-011fc1e91e9bdb9b5,vol-00161d785e1ce2446 Name=tag:Extra_Tag,Values=Weekly Name=tag:Name,Values=$tag_name Name=tag:Usage,Values=$tag_usage --output=json --query "Snapshots[?StartTime<='$rem_week'].SnapshotId[]"|tr -d ' +,[]')
-    rem_monthly_snaps=$(aws ec2 describe-snapshots --profile backup --filters Name=volume-id,Values=vol-0ca889652aa1f9bb8,vol-011fc1e91e9bdb9b5,vol-00161d785e1ce2446 Name=tag:Extra_Tag,Values=Monthly Name=tag:Name,Values=$tag_name Name=tag:Usage,Values=$tag_usage --output=json --query "Snapshots[?StartTime<='$rem_month'].SnapshotId[]"|tr -d ' +,[]"')
-    # echo 1 $rem_daily_snaps|tr ' ' '\n';
-    # echo 2 $rem_weekly_snaps|tr ' ' '\n';
+    rem_daily_snaps=$(aws ec2 describe-snapshots --profile backup --filters Name=volume-id,Values=vol-0ca889652aa1f9bb8,vol-011fc1e91e9bdb9b5,vol-00161d785e1ce2446 Name=tag:Extra_Tag,Values=Usual Name=tag:Name,Values=$tag_name Name=tag:Usage,Values=$tag_usage --output=json --query "Snapshots[?StartTime<='$rem_day'].SnapshotId[]"|tr -d ' +,[]"')
+    rem_weekly_snaps=$(aws ec2 describe-snapshots --profile backup --filters Name=volume-id,Values=vol-0ca889652aa1f9bb8,vol-011fc1e91e9bdb9b5,vol-00161d785e1ce2446 Name=tag:Extra_Tag,Values=Weekly Name=tag:Name,Values=$tag_name Name=tag:Usage,Values=$tag_usage --output=json --query "Snapshots[?StartTime<='$rem_week'].SnapshotId[0]"|tr -d ' +,[]"')
+    rem_monthly_snaps=$(aws ec2 describe-snapshots --profile backup --filters Name=volume-id,Values=vol-0ca889652aa1f9bb8,vol-011fc1e91e9bdb9b5,vol-00161d785e1ce2446 Name=tag:Extra_Tag,Values=Monthly Name=tag:Name,Values=$tag_name Name=tag:Usage,Values=$tag_usage --output=json --query "Snapshots[?StartTime<='$rem_month'].SnapshotId[0]"|tr -d ' +,[]"')
+    echo $rem_daily_snaps|tr ' ' '\n';
+    echo $rem_weekly_snaps|tr ' ' '\n';
     echo $rem_monthly_snaps|tr ' ' '\n';
 }
 
