@@ -26,9 +26,11 @@ volume_backup () {
 #collect snapshots to be removed
 data_maintenance () {
     rem_day=$(date +%FT%X -d "-$rem_days days")
+    rem_week=$(date +%FT%X -d "-$rem_weeks weeks")
+    rem_month=$(date +%FT%X -d "-$rem_months months")
     rem_daily_snaps=$(aws ec2 describe-snapshots --profile backup --filters Name=volume-id,Values=vol-0ca889652aa1f9bb8,vol-011fc1e91e9bdb9b5,vol-00161d785e1ce2446 Name=tag:Extra_Tag,Values=Usual Name=tag:Name,Values=$tag_name Name=tag:Usage,Values=$tag_usage --output=json --query "Snapshots[?StartTime<='$rem_day'].SnapshotId[]"|tr -d ' +,[]')
-    rem_weekly_snaps=$(aws ec2 describe-snapshots --profile backup --filters Name=volume-id,Values=vol-0ca889652aa1f9bb8,vol-011fc1e91e9bdb9b5,vol-00161d785e1ce2446 Name=tag:Extra_Tag,Values=Weekly Name=tag:Name,Values=$tag_name Name=tag:Usage,Values=$tag_usage --output=json --query "Snapshots[?StartTime<='$rem_date'].SnapshotId[]"|tr -d ' +,[]')
-    rem_monthly_snaps=$(aws ec2 describe-snapshots --profile backup --filters Name=volume-id,Values=vol-0ca889652aa1f9bb8,vol-011fc1e91e9bdb9b5,vol-00161d785e1ce2446 Name=tag:Extra_Tag,Values=Monthly Name=tag:Name,Values=$tag_name Name=tag:Usage,Values=$tag_usage --output=json --query "Snapshots[?StartTime<='$rem_date'].SnapshotId[]"|tr -d ' +,[]')
+    rem_weekly_snaps=$(aws ec2 describe-snapshots --profile backup --filters Name=volume-id,Values=vol-0ca889652aa1f9bb8,vol-011fc1e91e9bdb9b5,vol-00161d785e1ce2446 Name=tag:Extra_Tag,Values=Weekly Name=tag:Name,Values=$tag_name Name=tag:Usage,Values=$tag_usage --output=json --query "Snapshots[?StartTime<='$rem_week'].SnapshotId[]"|tr -d ' +,[]')
+    rem_monthly_snaps=$(aws ec2 describe-snapshots --profile backup --filters Name=volume-id,Values=vol-0ca889652aa1f9bb8,vol-011fc1e91e9bdb9b5,vol-00161d785e1ce2446 Name=tag:Extra_Tag,Values=Monthly Name=tag:Name,Values=$tag_name Name=tag:Usage,Values=$tag_usage --output=json --query "Snapshots[?StartTime<='$rem_month'].SnapshotId[]"|tr -d ' +,[]')
     echo daily snapshots are $rem_daily_snaps;
     echo weekly snapshots are $rem_weekly_snaps;
     echo monthly snapshots are $rem_monthly_snaps;
@@ -51,7 +53,27 @@ case $key in
     d) arg=${OPTARG#-}
     if [[ "$arg" = "${OPTARG}" ]]; then
         rem_days=$OPTARG
-        echo "Now rem_days values is $rem_days" #&& data_maintenance
+        echo "Now rem_days values is $rem_days"
+    else
+        echo "Removal value can't be the empty space"
+        OPTIND=$OPTIND-1
+        exit 1
+    fi
+    ;;
+    w) arg=${OPTARG#-}
+    if [[ "$arg" = "${OPTARG}" ]]; then
+        rem_weeks=$OPTARG
+        echo "Now rem_weeks values is $rem_weeks"
+    else
+        echo "Removal value can't be the empty space"
+        OPTIND=$OPTIND-1
+        exit 1
+    fi
+    ;;
+    m) arg=${OPTARG#-}
+    if [[ "$arg" = "${OPTARG}" ]]; then
+        rem_months=$OPTARG
+        echo "Now rem_months values is $rem_months"
     else
         echo "Removal value can't be the empty space"
         OPTIND=$OPTIND-1
