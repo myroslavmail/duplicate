@@ -117,7 +117,7 @@ echo !!!! SHOW ALL SNAPSHOTS TO BE REMOVED !!!
 data_maintenance
 echo !!!! NOW REMOVE THEM ALL !!!
 
-echo $rem_monthly_snaps|while read line; do
+data_maintenance|while read line; do
    echo $line
    aws ec2 describe-snapshots --profile backup --snapshot-ids $line --output=json
    echo =========================
