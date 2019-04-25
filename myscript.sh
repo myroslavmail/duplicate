@@ -4,13 +4,13 @@ set -e
 
 if [ "`date +%F`" = "`date -d "-$(date +%d) days month" +%F`" ] && [ "`date +%H%M%S`" -gt "205959" ]; then
     x=Monthly
-    echo $x
+    echo x value is $x
 elif [ `date +%w` -eq 4 ] && [ `date +%H%M%S` -gt 205959 ]; then
     x=Weekly
-    echo $x
+    echo x value is$x
 else
     x=Usual
-    echo $x
+    echo x value is $x
 fi
 
 #creating snapshots for the specified volumes as per specified tags
@@ -52,7 +52,7 @@ where:
 
 
 # configuring scrip arguments
-while [[ $# -gt 0 ]] && getopts "hn:u:d:" key; do
+while [[ $# -gt 0 ]] && getopts "hn:u:d:w:m:" key; do
 case $key in
     d) arg=${OPTARG#-}
     if [[ "$arg" = "${OPTARG}" ]]; then
