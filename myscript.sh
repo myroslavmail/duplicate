@@ -46,9 +46,10 @@ where:
     -w weeks to remove weekly snapshots
     -m months to remove monthly snapshots
     -n "Name" tag value
-    -u "Usage" tag value
+    -u "Usage" tag value"
     exit 0
 }
+
 
 # configuring scrip arguments
 while [[ $# -gt 0 ]] && getopts "hn:u:d:" key; do
