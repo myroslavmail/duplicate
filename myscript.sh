@@ -38,12 +38,15 @@ data_maintenance () {
 
 #help
 usage () {
-    echo "$(basename "$0") [-h] [-d -n -u] -- this is help description to my script
+    echo "$(basename "$0") [-h] [-d -w -m -n -u] -- this is help description to my script
 
 where:
     -h show this help text
-    -v volume tag
-    -r removal time"
+    -d days to remove daily snapshots
+    -w weeks to remove weekly snapshots
+    -m months to remove monthly snapshots
+    -n "Name" tag value
+    -u "Usage" tag value
     exit 0
 }
 
