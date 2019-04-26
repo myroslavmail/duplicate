@@ -1,8 +1,8 @@
-The idea is to create declarative Jenkins pipeline. Jenkins job is running inside of a docker container.
+***The idea is to create declarative Jenkins pipeline. Jenkins job is running inside of a docker container.***
 
 Сomments to the content:
 
-1. Jenkinsfile
+**1. Jenkinsfile**
 Jenkinsfile contains the following important information:
 - docker container information is specified inside of a dockerfile
 - logs of running jobs should be held for no longer then 180 days (adjustable value)
@@ -10,10 +10,10 @@ Jenkinsfile contains the following important information:
 - default parameters values, descriptions and names
 - the command line string which running the string with parameters
 
-2. Dockerfile
+**2. Dockerfile**
 In my case all processes are running on the Alpine container with all packets needed to make it run properly.
 
-3. myscript.sh
+**3. myscript.sh**
 Key moments:
 -  $x - value which helping us to identify when snapshot has been taken (In our case 3 options:  last day of the month (monthly), specific day of the week (weekly) or whenever else (usual)
 -  $vol_ids - extracting volume ids, based on the applied tag filer 
