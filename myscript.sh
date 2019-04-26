@@ -116,6 +116,6 @@ echo !!!! SHOW ALL SNAPSHOTS TO BE REMOVED !!!
 data_maintenance
 echo !!!! NOW REMOVE THEM ALL !!!
 data_maintenance|while read line; do
-   delete-snapshot --profile backup --snapshot-id $line;
+   aws ec2 delete-snapshot --profile backup --snapshot-id $line;
    echo !!!! REMOVAL SUCCESSFULLY COMPLETED !!!
 done
