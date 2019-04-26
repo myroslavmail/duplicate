@@ -117,7 +117,9 @@ data_maintenance
 echo !!!! NOW REMOVE THEM ALL !!!
 data_maintenance|while read line; do
    if [ -n $line ]; then
-   aws ec2 delete-snapshot --profile backup --snapshot-id $line;
-   echo !!!! REMOVAL SUCCESSFULLY COMPLETED !!!
-   fi
+       aws ec2 delete-snapshot --profile backup --snapshot-id $line;
+       echo !!!! REMOVAL SUCCESSFULLY COMPLETED !!!
+   else
+       echo "not screenshots to remove"
+      fi
 done
