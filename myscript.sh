@@ -119,7 +119,7 @@ if [ -n $(data_maintenance)]; then
     data_maintenance|while read line; do
     aws ec2 delete-snapshot --profile backup --snapshot-id $line;
     echo !!!! REMOVAL SUCCESSFULLY COMPLETED !!!
+    done
 else
     echo "No snapshots to remove"
-    done
 fi
