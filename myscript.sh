@@ -28,9 +28,9 @@ data_maintenance () {
     rem_day=$(date +%FT%X -d "-$rem_days days")
     rem_week=$(date +%FT%X -d "-$rem_weeks weeks")
     rem_month=$(date +%FT%X -d "-$rem_months months")
-    rem_daily_snaps=$(aws ec2 describe-snapshots --profile backup Name=tag:Extra_Tag,Values=Usual Name=tag:Name,Values=$tag_name Name=tag:Usage,Values=$tag_usage --output=json --query "Snapshots[?StartTime<='$rem_day'].SnapshotId[]"|tr -d ' +,[]"'|sed '/^$/d')
-    rem_weekly_snaps=$(aws ec2 describe-snapshots --profile backup Name=tag:Extra_Tag,Values=Weekly Name=tag:Name,Values=$tag_name Name=tag:Usage,Values=$tag_usage --output=json --query "Snapshots[?StartTime<='$rem_week'].SnapshotId[]"|tr -d ' +,[]"'|sed '/^$/d')
-    rem_monthly_snaps=$(aws ec2 describe-snapshots --profile backup Name=tag:Extra_Tag,Values=Monthly Name=tag:Name,Values=$tag_name Name=tag:Usage,Values=$tag_usage --output=json --query "Snapshots[?StartTime<='$rem_month'].SnapshotId[]"|tr -d ' +,[]"'|sed '/^$/d')
+    rem_daily_snaps=$(aws ec2 describe-snapshots --profile backup --filters Name=tag:Extra_Tag,Values=Usual Name=tag:Name,Values=$tag_name Name=tag:Usage,Values=$tag_usage --output=json --query "Snapshots[?StartTime<='$rem_day'].SnapshotId[]"|tr -d ' +,[]"'|sed '/^$/d')
+    rem_weekly_snaps=$(aws ec2 describe-snapshots --profile backup --filters Name=tag:Extra_Tag,Values=Weekly Name=tag:Name,Values=$tag_name Name=tag:Usage,Values=$tag_usage --output=json --query "Snapshots[?StartTime<='$rem_week'].SnapshotId[]"|tr -d ' +,[]"'|sed '/^$/d')
+    rem_monthly_snaps=$(aws ec2 describe-snapshots --profile backup --filters Name=tag:Extra_Tag,Values=Monthly Name=tag:Name,Values=$tag_name Name=tag:Usage,Values=$tag_usage --output=json --query "Snapshots[?StartTime<='$rem_month'].SnapshotId[]"|tr -d ' +,[]"'|sed '/^$/d')
     echo $rem_daily_snaps|tr ' +' '\n'|sed '/^$/d';
     echo $rem_weekly_snaps|tr ' +' '\n'|sed '/^$/d';
     echo $rem_monthly_snaps|tr ' +' '\n'|sed '/^$/d';
