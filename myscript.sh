@@ -115,11 +115,11 @@ volume_backup
 echo !!!! SHOW ALL SNAPSHOTS TO BE REMOVED !!!
 data_maintenance
 echo !!!! NOW REMOVE THEM ALL !!!
-if [ -n $(data_maintenance) ]; then
-    data_maintenance|while read line; do
-    aws ec2 delete-snapshot --profile backup --snapshot-id $line;
-    echo !!!! REMOVAL SUCCESSFULLY COMPLETED !!!
-    done
-else
-    echo "No snapshots to remove"
-fi
+data_maintenance|while read line; do
+    if [ -n $line ]; then
+        aws ec2 delete-snapshot --profile backup --snapshot-id $line;
+        echo !!!! REMOVAL SUCCESSFULLY COMPLETED !!!
+    else
+        echo "No snapshots to remove"
+    fi
+done
