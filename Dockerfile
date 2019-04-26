@@ -9,6 +9,3 @@ RUN apk update\
 && apk --purge -v del py-pip \
 && apk add coreutils \
 && rm /var/cache/apk/*
-RUN aws configure set profile.backup.aws_access_key_id AKIAYA4DMQLPZIDALJCW \
-&& aws configure set profile.backup.aws_secret_access_key 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 \
-&& aws configure set profile.backup.region us-east-1
