@@ -5,7 +5,7 @@ set -e
 if [ `date +%F` = `date -d "-$(date +%d) days month" +%F` ]; then
     x=Monthly
     echo x value is $x
-elif [ `date +%w` -eq 4 ]; then
+elif [ `date +%w` -eq 6 ]; then
     x=Weekly
     echo x value is $x
 else
