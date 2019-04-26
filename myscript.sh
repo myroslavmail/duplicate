@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -e
+set -e -x
 
 if [ `date +%F` = `date -d "-$(date +%d) days month" +%F` ]; then
     x=Monthly
