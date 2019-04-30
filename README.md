@@ -1,10 +1,10 @@
-***The idea is to create declarative Jenkins pipeline which should be running inside of a docker container which should be launched from the parametrized script.***
+***The idea is to create declarative parametrized Jenkins pipeline which should be running inside of the docker container that takes snapshots for all volumes tagged "Usage" and "Name" (the job also transfers those tags to the snapshots) for a specified time period (the default cronjob value is "per 3 hours") Simultaneously it runs the script that removes snapshots taken on daily, weekly and monthly snapshots basis. Each of those 3s is supplied with its own uniqe value  which inclue "Usage" and "Name" tag values and Snapshot removal time (uniqu value for monthly, weekly and daily snapshots) .***
 
 Сomments to the content:
 
 # Jenkinsfile
 
-Jenkinsfile contains the brings the following data:
+Jenkinsfile brings the following data:
 - docker container information is specified inside of a dockerfile
 - logs of the running jobs should be held for no longer then 180 days (surely, adjustable value)
 - cronjob, launching every (default value) 3 hours
