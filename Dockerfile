@@ -2,7 +2,7 @@ FROM alpine
 
 LABEL maintainer="Myroslav Mail<myroslavmail@ukr.net>"
 
-RUN apk update\
+RUN apk update \
 && apk -Uuv add groff less python py-pip \
 && pip install awscli \
 && apk add jq \
